@@ -3,7 +3,7 @@ name: Deploy to Hosting via FTP
 on:
   push:
     branches:
-      - main # atau master
+      - main
 
 jobs:
   web-deploy:
@@ -19,4 +19,4 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/ # sesuaikan folder tujuan di hosting
+          server-dir: public_html/
