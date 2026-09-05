@@ -1,0 +1,40 @@
+{
+  "babMateri": {
+    "bab1": {
+      "judul": "Bab I: Aku dan Sekitarku",
+      "sub": "Memahami Teks melalui Nilai Seni dan Budaya Lokal",
+      "deskripsi": "Mengajak siswa memahami struktur, ciri, dan kaidah kebahasaan teks deskripsi dengan objek seni budaya seperti Batik Obor Sewu dan Wayang Thengul.",
+      "file_target": "bab1.html"
+    },
+    "bab2": {
+      "judul": "Bab II: Imajinasiku Tanpa Batas",
+      "sub": "Menyajikan Laporan Ilmiah Berbasis Data Faktual",
+      "deskripsi": "Mempelajari cara menyusun laporan observasi yang objektif terhadap peninggalan sejarah, alat musik tradisional, dan fenomena lingkungan sekitar.",
+      "file_target": "bab2.html"
+    },
+    "bab3": {
+      "judul": "Bab III: Panduan Praktis Kehidupanku",
+      "sub": "Mengeksplorasi Dunia Imajinatif dan Dongeng Moral",
+      "deskripsi": "Menelaah unsur intrinsik cerita fantasi lintas waktu serta teks fabel yang kaya akan amanat budi pekerti.",
+      "file_target": "bab3.html"
+    },
+    "bab4": {
+      "judul": "Bab IV: Indahnya Nasihat dan Rima",
+      "sub": "Menganalisis Fragmen Kehidupan Manusia lewat Prosa",
+      "deskripsi": "Membedakan orientasi, komplikasi, klimaks, hingga resolusi dalam cerpen bertema sosial dan keluarga.",
+      "file_target": "bab4.html"
+    },
+    "bab5": {
+      "judul": "Bab V: Fakta, Berita dan Gagasan",
+      "sub": "Panduan Langkah Sistematis Pembuatan Karya Seni",
+      "deskripsi": "Instruksi terstruktur mengenai tahapan pengerjaan batik ceplok, kuliner tradisional, dan penggunaan alat musik.",
+      "file_target": "bab5.html"
+    },
+    "bab6": {
+      "judul": "Bab VI: Inspirasi untuk Maju",
+      "sub": "Menjelaskan Proses Sebab-Akibat Fenomena Budaya",
+      "deskripsi": "Mengupas kronologi dan latar belakang sejarah terjadinya tradisi lokal seperti Sekaten dan Grebeg Suro.",
+      "file_target": "bab6.html"
+    },
+  }
+}

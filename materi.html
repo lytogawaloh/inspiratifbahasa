@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Materi - Bahasa Indonesia Inspiratif</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav-materi">
+    <a href="index.html" class="btn-kembali">Kembali ke Daftar Bab</a>
+    <span id="nav-judul-bab">Memuat...</span>
+    <!-- Tombol PDF Navigasi -->
+    <div class="nav-pdf-group">
+      <a id="btn-pdf-view-nav" href="#" target="_blank" class="btn-pdf btn-pdf-view" title="Buka PDF di Tab Baru">
+        👁️ Baca PDF
+      </a>
+    </div>
+  </nav>
+
+  <!--<main class="container materi-layout">-->
+  <!--  <article class="konten-bacaan">-->
+  <!--    <h1 id="materi-judul">Judul Materi</h1>-->
+  <!--    <p id="materi-sub" class="sub-judul">Sub Judul</p>-->
+      <!-- Group Tombol PDF Utama -->
+  <!--      <div id="pdf-action-group" class="pdf-action-group hidden">-->
+           <!--Opsi 1: Hanya Buka via Browser -->
+  <!--        <a id="btn-pdf-view-utama" href="#" target="_blank" class="btn-pdf-action btn-view">-->
+  <!--          Buka PDF di Browser-->
+  <!--        </a>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--    <hr>-->
+  <!--    <div id="materi-isi" class="isi-artikel"></div>-->
+  <!--  </article>-->
+
+  <!--  <section class="area-kuis">-->
+  <!--    <h2>Uji Pemahaman Bab</h2>-->
+  <!--    <div id="kontainer-kuis">-->
+  <!--      </div>-->
+  <!--  </section>-->
+  <!--</main>-->
+  <main class="container materi-layout">
+    <article class="konten-bacaan">
+      <div class="header-artikel">
+        <div>
+          <h1 id="materi-judul">Judul Materi</h1>
+          <p id="materi-sub" class="sub-judul">Sub Judul</p>
+        </div>
+         <!--Group Tombol PDF Utama -->
+        <div id="pdf-action-group" class="pdf-action-group hidden">
+           <!--Opsi 1: Hanya Buka via Browser -->
+          <a id="btn-pdf-view-utama" href="#" target="_blank" class="btn-pdf-action btn-view">
+            Buka PDF di Browser
+          </a>
+        </div>
+      </div>
+      <hr>
+      <div id="materi-isi" class="isi-artikel"></div>
+    </article>
+
+  <script>
+    async function muatHalamanMateri() {
+      // 1. Ambil parameter "?bab=..." dari URL browser
+      const urlParams = new URLSearchParams(window.location.search);
+      const idBab = urlParams.get('bab'); // Contoh hasil: 'bab1'
+
+      if (!idBab) {
+        window.location.href = 'index.html'; // Jika tidak ada bab, kembalikan ke beranda
+        return;
+      }
+
+      try {
+        // 2. Ambil data dari file JSON
+        const response = await fetch('data.json');
+        const data = await response.json();
+        
+        // 3. Ambil objek materi berdasarkan ID Bab
+        const materi = data.materiData[idBab];
+
+        if (!materi) {
+          document.body.innerHTML = "<h1>Maaf, Bab tidak ditemukan!</h1>";
+          return;
+        }
+
+        // 4. Masukkan data ke dalam elemen HTML halaman
+        document.title = `${materi.judul} - Bahasa Indonesia Inspiratif`;
+        document.getElementById('nav-judul-bab').innerText = materi.judul;
+        document.getElementById('materi-judul').innerText = materi.judul;
+        document.getElementById('materi-sub').innerText = materi.sub;
+        document.getElementById('materi-isi').innerHTML = materi.konten;
+
+        // 5. Muat Kuis Spesifik Bab dari properti soal
+        if (materi.soal && materi.soal.length > 0) {
+          muatKuisBab(materi.soal);
+        } else {
+          document.getElementById('kontainer-kuis').innerHTML = '<p class="no-quiz">Belum ada kuis untuk bab ini.</p>';
+        }
+
+      } catch (error) {
+        console.error("Error memuat detail bab:", error);
+      }
+    }
+
+    function muatKuisBab(soalList) {
+      const kontainer = document.getElementById('kontainer-kuis');
+      if (!soalList || soalList.length === 0) {
+        kontainer.innerHTML = '<p>Belum ada kuis untuk bab ini.</p>';
+        return;
+      }
+
+      kontainer.innerHTML = '';
+      soalList.forEach((soal, index) => {
+        const soalDiv = document.createElement('div');
+        soalDiv.className = 'blok-soal';
+        
+        // Buat elemen pertanyaan
+        const pertanyaanP = document.createElement('p');
+        pertanyaanP.className = 'tanya';
+        pertanyaanP.innerHTML = `<strong>Soal ${index + 1}:</strong> ${soal.pertanyaan}`;
+        
+        // Buat container untuk pilihan
+        const pilihanDiv = document.createElement('div');
+        pilihanDiv.className = 'pilihan-list';
+        
+        // Buat tombol untuk setiap pilihan
+        soal.pilihan.forEach((pil, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'btn-pilihan';
+          btn.textContent = pil;
+          
+          // Attach event listener tanpa inline onclick
+          btn.addEventListener('click', function() {
+            cekJawaban(this, idx, soal.benar, soal.penjelasan);
+          });
+          
+          pilihanDiv.appendChild(btn);
+        });
+        
+        // Buat elemen feedback (awalnya hidden)
+        const feedbackP = document.createElement('p');
+        feedbackP.className = 'umpan-balik hidden';
+        
+        // Susun elemen dalam soalDiv
+        soalDiv.appendChild(pertanyaanP);
+        soalDiv.appendChild(pilihanDiv);
+        soalDiv.appendChild(feedbackP);
+        
+        kontainer.appendChild(soalDiv);
+      });
+    }
+
+    function cekJawaban(btn, terpilih, benar, penjelasan) {
+      const parent = btn.parentElement;
+      const feedback = parent.nextElementSibling;
+      
+      // Matikan semua tombol pilihan pada nomor soal tersebut agar tidak bisa spam klik
+      const semuaTombol = parent.querySelectorAll('.btn-pilihan');
+      semuaTombol.forEach(t => t.disabled = true);
+
+      if (terpilih === benar) {
+        btn.classList.add('jawaban-benar');
+        feedback.innerHTML = `🟢 <strong>Benar!</strong> ${penjelasan}`;
+      } else {
+        btn.classList.add('jawaban-salah');
+        semuaTombol[benar].classList.add('jawaban-benar'); // Beri tahu jawaban yang benar
+        feedback.innerHTML = `🔴 <strong>Kurang Tepat.</strong> ${penjelasan}`;
+      }
+      feedback.classList.remove('hidden');
+    }
+
+    window.addEventListener('DOMContentLoaded', muatHalamanMateri);
+  </script>
+</body>
+</html>
